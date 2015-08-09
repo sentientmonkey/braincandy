@@ -28,3 +28,13 @@ class ScrabbleWords
     combinations.select{|word| words.include? word }
   end
 end
+
+if __FILE__==$0
+  require "benchmark"
+  bm = Benchmark.measure {
+    scrabble = ScrabbleWords.new
+    letters = ARGV[0].chars
+    $stdout.puts scrabble.find letters
+  }
+  $stderr.puts "Benchmark: #{bm}"
+end
