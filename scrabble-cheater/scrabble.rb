@@ -1,8 +1,10 @@
+require "set"
+
 class ScrabbleWords
   attr_reader :words
 
   def initialize filename=nil
-    @words = normalize(fetch(filename))
+    @words = Set.new normalize(fetch(filename))
   end
 
   def fetch filename
@@ -17,10 +19,12 @@ class ScrabbleWords
   def find letters
     results = []
     combinations = []
-    2.upto(letters.length) do |size|
+
+    (letters.length).downto(2) do |size|
       combinations << letters.combination(size).map{ |c| c.permutation.map { |a| a.join '' } }
     end
-    combinations.flatten!
-    words.select{|word| combinations.include? word }
+    combinations = combinations.flatten.uniq
+
+    combinations.select{|word| words.include? word }
   end
 end
