@@ -1,18 +1,26 @@
 class Professor
-  attr_reader :grades
+  attr_reader :grades, :totals
 
+  # Tallys and provides answer key based on grades
   def initialize(filename)
     lines = File.readlines filename
-    @grades = lines.map{ |line| line.chomp.each_char.to_a }
+    @grades = lines.map{ |line| line.chomp.each_char.to_a }.transpose
+    @totals = Array.new(@grades.size){ Hash.new(0) }
+    tally_answers
   end
 
-  # Tallys and provides answer key based on grades.
   # Grades solely on propularity, and for ties, picks the first one.
   def answers
-    grades.transpose.map do |question|
-      question.each_with_object(Hash.new(0)) do |grade,totals|
-        totals[grade] += 1
-      end.max_by{|_,count| count}.first
-    end.join ''
+    totals.map{|question| question.max_by{ |_,count| count}.first }.join ''
+  end
+
+  private
+
+  def tally_answers
+    grades.each_with_index do |question,i|
+      question.each do |grade|
+        totals[i][grade] += 1
+      end
+    end
   end
 end
