@@ -35,6 +35,7 @@ class Parens
         buffer << token
       end
     end
+    return false unless stack.empty?
     output
   end
 
