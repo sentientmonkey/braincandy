@@ -14,47 +14,50 @@ class Parens
 
   ESCAPE = %w(")
 
-  def self.rainbow text
-    output = ""
-    stack = []
-    color_stack = []
-    colors = COLORS.values.cycle
-    buffer = ""
-    escaped = false
+  def initialize
+    @output = ""
+    @stack = []
+    @color_stack = []
+    @colors = COLORS.values.cycle
+    @buffer = ""
+    @escaped = false
+  end
+
+  def rainbow text
     text.each_char do |token|
-      if escaped && !ESCAPE.include?(token)
-        buffer << token
+      if @escaped && !ESCAPE.include?(token)
+        @buffer << token
         next
       end
 
       case token
       when *ESCAPE
-        buffer << token
-        escaped = !escaped
+        @buffer << token
+        @escaped = !@escaped
       when *PAIRS.keys
-        stack << token
-        color_stack << colors.next
-        output << buffer << color_stack.last << token << WHITE
-        buffer = ""
+        @stack << token
+        @color_stack << @colors.next
+        @output << @buffer << @color_stack.last << token << WHITE
+        @buffer = ""
       when *PAIRS.values
-        if PAIRS[stack.pop] != token
+        if PAIRS[@stack.pop] != token
           return false
         end
-        output << buffer << color_stack.pop << token << WHITE
-        buffer = ""
+        @output << @buffer << @color_stack.pop << token << WHITE
+        @buffer = ""
       else
-        buffer << token
+        @buffer << token
       end
     end
-    return false unless stack.empty?
-    output
+    return false unless @stack.empty?
+    @output
   end
 
-  def self.valid? text
+  def valid? text
     !!rainbow(text)
   end
 end
 
 if __FILE__ == $0
-  $stdout.puts Parens.rainbow($stdin) || "Invalid Parens!"
+  $stdout.puts Parens.new.rainbow($stdin) || "Invalid Parens!"
 end
