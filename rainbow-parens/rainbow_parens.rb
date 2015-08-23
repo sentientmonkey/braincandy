@@ -12,14 +12,25 @@ class Parens
 
   WHITE = "\e[0m"
 
+  ESCAPE = %w(")
+
   def self.rainbow text
     output = ""
     stack = []
     color_stack = []
     colors = COLORS.values.cycle
     buffer = ""
+    escaped = false
     text.each_char do |token|
+      if escaped && !ESCAPE.include?(token)
+        buffer << token
+        next
+      end
+
       case token
+      when *ESCAPE
+        buffer << token
+        escaped = !escaped
       when *PAIRS.keys
         stack << token
         color_stack << colors.next
@@ -45,5 +56,5 @@ class Parens
 end
 
 if __FILE__ == $0
-  $stdout.puts Parens.rainbow($stdin) || "Error: Invalid!"
+  $stdout.puts Parens.rainbow($stdin) || "Invalid Parens!"
 end

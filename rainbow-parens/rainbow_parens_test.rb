@@ -24,6 +24,10 @@ class ParensTest < Minitest::Test
     assert Parens.valid? "   [  (  ) ] {}   {[   ()()] ()}   "
   end
 
+  def test_valid_smile
+    assert Parens.valid? "(define smile \"(:\")"
+  end
+
   def test_valid_code
     assert Parens.valid? "(define (lambda (x) (add5 (+ 5 x))))"
   end
@@ -40,5 +44,10 @@ class ParensTest < Minitest::Test
   def test_rainbow_code
     result = Parens.rainbow "(define (lambda (x) (add5 (+ 5 x))))"
     assert_equal result, "\e[31m(\e[0mdefine \e[32m(\e[0mlambda \e[33m(\e[0mx\e[33m)\e[0m \e[34m(\e[0madd5 \e[35m(\e[0m+ 5 x\e[35m)\e[0m\e[34m)\e[0m\e[32m)\e[0m\e[31m)\e[0m"
+  end
+
+  def test_rainbow_escaping
+    result = Parens.rainbow "(define smile \":)\")"
+    assert_equal result, "\e[31m(\e[0mdefine smile \":)\"\e[31m)\e[0m"
   end
 end
