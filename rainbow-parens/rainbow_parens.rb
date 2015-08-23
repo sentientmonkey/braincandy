@@ -25,28 +25,21 @@ class Parens
 
   def rainbow text
     text.each_char do |token|
-      if @escaped && !ESCAPE.include?(token)
-        @buffer << token
+      if escaped? token
+        write_buffer token
         next
       end
 
       case token
       when *ESCAPE
-        @buffer << token
-        @escaped = !@escaped
+        escape token
       when *PAIRS.keys
-        @stack << token
-        @color_stack << @colors.next
-        @output << @buffer << @color_stack.last << token << WHITE
-        @buffer = ""
+        begin_pair token
       when *PAIRS.values
-        if PAIRS[@stack.pop] != token
-          return false
-        end
-        @output << @buffer << @color_stack.pop << token << WHITE
-        @buffer = ""
+        return false if unmatched? token
+        end_pair token
       else
-        @buffer << token
+        write_buffer token
       end
     end
     return false unless @stack.empty?
@@ -55,6 +48,46 @@ class Parens
 
   def valid? text
     !!rainbow(text)
+  end
+
+  private
+
+  def escaped? token
+    @escaped && !ESCAPE.include?(token)
+  end
+
+  def unmatched? token
+    PAIRS[@stack.pop] != token
+  end
+
+  def escape token
+    write_buffer token
+    @escaped = !@escaped
+  end
+
+  def begin_pair token
+    @stack << token
+    @color_stack << @colors.next
+    write_color @color_stack.last, token
+    flush_buffer
+  end
+
+  def end_pair token
+    write_color @color_stack.pop, token
+    flush_buffer
+  end
+
+  def flush_buffer
+    @output << @buffer
+    @buffer = ""
+  end
+
+  def write_color color, token
+    @buffer << color << token << WHITE
+  end
+
+  def write_buffer token
+    @buffer << token
   end
 end
 
