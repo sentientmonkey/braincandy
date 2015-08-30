@@ -15,10 +15,17 @@ class MonteCarloPi
   end
 
   def test_points
-    results = points.group_by do |p|
-      in_circle? x: p.x, y: p.y, radius: 0.75
+    m = 0
+    n = 0
+
+    points.each do |p|
+      if in_circle? x: p.x, y: p.y, radius: 0.75
+        m += 1
+      else
+        n += 1
+      end
     end
-    [results[true].length, results[false].length]
+    [m,n]
   end
 
   def generate_points size
@@ -31,7 +38,7 @@ class MonteCarloPi
   end
 end
 
-if __FILE__ == $0
+if __FILE__ == $0 || $0 =~ /ruby-prof/
   n = (ARGV[0] || 10000).to_i
   puts MonteCarloPi.new(n).pi
 end
