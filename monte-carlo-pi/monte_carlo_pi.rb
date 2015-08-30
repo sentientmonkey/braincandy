@@ -16,16 +16,13 @@ class MonteCarloPi
 
   def test_points
     m = 0
-    n = 0
 
     points.each do |p|
-      if in_circle? p.x, p.y, 0.75
+      if in_circle? p.x, p.y, 1.0
         m += 1
-      else
-        n += 1
       end
     end
-    [m,n]
+    [m,points.length]
   end
 
   def generate_points size
