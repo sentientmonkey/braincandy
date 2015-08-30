@@ -15,11 +15,11 @@ class MonteCarloPiTest < Minitest::Test
   end
 
   def test_in_circle
-    assert @monte_carlo.in_circle? x: 0.5, y: 0.5, radius: 0.75
+    assert @monte_carlo.in_circle? 0.5, 0.5, 0.75
   end
 
   def test_out_of_circle
-    refute @monte_carlo.in_circle? x: 1.0, y: 1.0, radius: 0.75
+    refute @monte_carlo.in_circle? 1.0, 1.0, 0.75
   end
 
   def test_generate_points

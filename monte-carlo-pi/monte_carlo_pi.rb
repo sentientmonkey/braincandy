@@ -19,7 +19,7 @@ class MonteCarloPi
     n = 0
 
     points.each do |p|
-      if in_circle? x: p.x, y: p.y, radius: 0.75
+      if in_circle? p.x, p.y, 0.75
         m += 1
       else
         n += 1
@@ -33,7 +33,7 @@ class MonteCarloPi
   end
 
   # assumes 0,0 origin
-  def in_circle? x: x, y: y, radius: radius
+  def in_circle? x, y, radius
     Math.sqrt(x**2 + y**2) < radius
   end
 end
