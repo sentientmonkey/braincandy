@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+require 'bigdecimal'
 
 class FastPi
   attr_reader :size, :pi
@@ -8,22 +9,27 @@ class FastPi
     calculate_pi
   end
 
+  def bd number
+    BigDecimal.new number.to_s
+  end
+
   # calculates pi up to size digits
   # using the BBP forumla
   # https://en.wikipedia.org/wiki/Bailey–Borwein–Plouffe_formula
   def calculate_pi
-    @pi = 0.0
-    size.times do |k|
-      @pi += (16.0**-k) *
-        ((4.0/(8.0*k + 1.0)) -
-         (2.0/(8.0*k + 4.0)) -
-         (1.0/(8.0*k + 5.0)) -
-         (1.0/(8.0*k + 6.0)))
+    @pi = bd(0)
+    size.times do |n|
+      k = bd(n)
+      @pi = @pi + (bd(16)**-k) *
+        ((bd(4)/(bd(8)*k + bd(1))) -
+         (bd(2)/(bd(8)*k + bd(4))) -
+         (bd(1)/(bd(8)*k + bd(5))) -
+         (bd(1)/(bd(8)*k + bd(6))))
     end
   end
 
   def to_s
-    "%0.#{size}f" % pi
+    pi.to_s "F"
   end
 end
 

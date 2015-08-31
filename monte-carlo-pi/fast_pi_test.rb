@@ -10,6 +10,6 @@ class FastPiTest < Minitest::Test
     size = 40
     fast_pi = FastPi.new size
     pi = fast_pi.pi
-    assert_in_delta Math::PI, pi, 10.0**-size
+    assert_in_delta Math::PI, pi.to_f, 10.0**-size
   end
 end
