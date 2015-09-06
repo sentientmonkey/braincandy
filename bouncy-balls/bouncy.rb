@@ -5,6 +5,11 @@ require "graphics"
 class Ball < Graphics::Body
   def initialize w
     super
+    self.velocity = V.new 0, -5
+  end
+
+  def update
+    move
   end
 
   def draw
@@ -18,10 +23,10 @@ class BounceSimulation < Graphics::Simulation
   def initialize
     super 640, 640, 16, "Bounce"
     self.balls = populate Ball, 1
-    puts balls.inspect
   end
 
   def update n
+    balls.each(&:move)
   end
 
   def draw n
