@@ -1,7 +1,12 @@
 #!/usr/bin/env ruby -w
 
-module PascalTriangle
+class PascalTriangle
+  def initialize
+    @m = {}
+  end
+
   def pascal_triangle n
+    return @m[n] if @m.include? n
     case n
     when 1
       [1]
@@ -21,7 +26,6 @@ module PascalTriangle
 end
 
 if __FILE__ == $0
-  include PascalTriangle
-  t = pascal_triangle ARGV[0].to_i
+  t = PascalTriangle.new.pascal_triangle ARGV[0].to_i
   puts t.inspect
 end

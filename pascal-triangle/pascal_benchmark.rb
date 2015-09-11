@@ -7,11 +7,10 @@ require "minitest/pride"
 require_relative "pascal.rb"
 
 class BenchmarkPascal < Minitest::Benchmark
-  include PascalTriangle
-
   def bench_pascal
+    t = PascalTriangle.new
     assert_performance_linear 0.9999 do |n|
-      pascal_triangle n
+      t.pascal_triangle n
     end
   end
 end
