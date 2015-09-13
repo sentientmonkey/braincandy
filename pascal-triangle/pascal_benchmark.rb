@@ -8,9 +8,9 @@ require_relative "pascal.rb"
 
 class BenchmarkPascal < Minitest::Benchmark
   def bench_pascal
-    t = PascalTriangle.new
     assert_performance_linear 0.9999 do |n|
-      t.pascal_triangle n
+      t = PascalTriangle.new n
+      t.triangle
     end
   end
 end
