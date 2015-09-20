@@ -20,9 +20,10 @@ class YahtzeeScoreTest < Minitest::Test
     end
   end
 
-  def test_score_ones
-    ones = Dice.new 1,1,2,3,4
-    assert_equal 2, @score.score(ones)
+  def test_score_combo_over_ones
+    skip
+    combo = Dice.new 1,1,2,3,4
+    assert_equal 11, @score.score(combo)
   end
 
   def test_score_twos
