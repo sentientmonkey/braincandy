@@ -21,14 +21,13 @@ class YahtzeeScoreTest < Minitest::Test
   end
 
   def test_score_combo_over_ones
-    skip
     combo = Dice.new 1,1,2,3,4
     assert_equal 11, @score.score(combo)
   end
 
-  def test_score_twos
-    all_twos = Dice.new 2,2,1,4,5
-    assert_equal 4, @score.score(all_twos)
+  def test_score_combos
+    skip
+    # can't seem to figure how how Ones, Twos, etc will ever beat chance
   end
 
   def test_score_three_of_a_kind
@@ -64,5 +63,10 @@ class YahtzeeScoreTest < Minitest::Test
   def test_chance
     chance = Dice.new 3,2,1,5,6
     assert_equal 17, @score.score(chance)
+  end
+
+  def test_random_score
+    result = @score.score Dice.roll!
+    assert result >= 1 && result <= 50
   end
 end

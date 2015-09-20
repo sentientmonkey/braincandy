@@ -9,21 +9,31 @@ require_relative "large_straight_dice_score.rb"
 require_relative "yahtzee_dice_score.rb"
 
 class YahtzeeScore
+
+  def score_classes
+    [YahtzeeDiceScore,
+     LargeStraightDiceScore,
+     SmallStraightDiceScore,
+     FullHouseDiceScore,
+     KindDiceScore,
+     ComboDiceScore,
+     ChanceDiceScore]
+  end
+
   def score dice
-    if YahtzeeDiceScore.new(dice).applies?
-      YahtzeeDiceScore.new(dice).score
-    elsif LargeStraightDiceScore.new(dice).applies?
-      LargeStraightDiceScore.new(dice).score
-    elsif SmallStraightDiceScore.new(dice).applies?
-      SmallStraightDiceScore.new(dice).score
-    elsif FullHouseDiceScore.new(dice).applies?
-      FullHouseDiceScore.new(dice).score
-    elsif KindDiceScore.new(dice).applies?
-      KindDiceScore.new(dice).score
-    elsif ComboDiceScore.new(dice).applies?
-      ComboDiceScore.new(dice).score
-    else # chance
-      ChanceDiceScore.new(dice).score
+    score_classes.map do |score_class|
+      dice_score = score_class.new dice
+      if dice_score.applies?
+        dice_score.score
+      else
+        0
+      end
+    end.max
+  end
+
+  def build_dice_score dice
+    score_classes.map do |score_class|
+      score_class.new dice
     end
   end
 end
