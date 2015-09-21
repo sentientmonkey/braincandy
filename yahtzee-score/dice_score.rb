@@ -9,6 +9,11 @@ class DiceScore
     raise "Not Implemented"
   end
 
+  private
+
+  # helper functions
+  # could refactor into mixins, but meh.
+
   def sum roll
     roll.reduce &:+
   end
