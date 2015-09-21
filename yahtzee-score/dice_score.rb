@@ -5,10 +5,6 @@ class DiceScore
     @dice = dice
   end
 
-  def applies?
-    raise "Not Implemented"
-  end
-
   def score
     raise "Not Implemented"
   end

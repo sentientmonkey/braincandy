@@ -1,11 +1,11 @@
 require_relative "dice_score.rb"
 
 class SmallStraightDiceScore < DiceScore
-  def applies?
-    straight_count == 4
-  end
-
   def score
-    30
+    if straight_count == 4
+      30
+    else
+      0
+    end
   end
 end

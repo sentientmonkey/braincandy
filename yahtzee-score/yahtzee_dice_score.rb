@@ -1,11 +1,11 @@
 require_relative "dice_score"
 
 class YahtzeeDiceScore < DiceScore
-  def applies?
-    roll_group.length == 1
-  end
-
   def score
-    50
+    if roll_group.length == 1
+      50
+    else
+      0
+    end
   end
 end

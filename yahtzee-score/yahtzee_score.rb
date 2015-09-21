@@ -21,19 +21,6 @@ class YahtzeeScore
   end
 
   def score dice
-    score_classes.map do |score_class|
-      dice_score = score_class.new dice
-      if dice_score.applies?
-        dice_score.score
-      else
-        0
-      end
-    end.max
-  end
-
-  def build_dice_score dice
-    score_classes.map do |score_class|
-      score_class.new dice
-    end
+    score_classes.map{ |score_class| score_class.new(dice).score }.max
   end
 end
